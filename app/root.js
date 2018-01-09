@@ -1,6 +1,8 @@
 import React from 'react'
 import Header from './components/header'
 import Progress from './components/progress'
+
+let duration = null;
 let Root = React.createClass({
 	
 	
@@ -21,11 +23,20 @@ let Root = React.createClass({
 			
 		});
 		$('#player').bind($.jPlayer.event.timeupdate, (e) =>{
+			duration = e.jPlayer.status.duration;
 			this.setState({
-				progress: Math.round(e.jPlayer.status.currentTime)
+				progress: e.jPlayer.status.currentPercentAbsolute
 			});
 			
 		});
+	},	
+	componentWillUnmount(){
+		$('#player').unbind($.jPlayer.event.timeupdate);
+	},
+	progressChangeHandler(progress){
+		console.log('from root widget',progress);
+		$('#player').jPlayer('play', duration * progress);
+		
 	},
 	render(){
 		return(
@@ -34,6 +45,10 @@ let Root = React.createClass({
 				<div id="player"></div>
 				<Progress
 					progress={this.state.progress}
+					onProgressChange = {
+						this.progressChangeHandler
+					}
+					barColor = "#ff0000"
 				>
 				</Progress>
 			</div>			
