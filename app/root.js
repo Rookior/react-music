@@ -1,14 +1,16 @@
 import React from 'react'
 import Header from './components/header'
-import Progress from './components/progress'
+import Player from './page/player'
+import MusicList from './page/musiclist'
+import { MUSIC_LIST } from './config/musiclist'
 
-let duration = null;
+
 let Root = React.createClass({
-	
 	
 	getInitialState(){
 		return{
-			progress: '-'
+			musicList : MUSIC_LIST,
+			currentMusicItem: MUSIC_LIST[1]
 		}
 	},
 	componentDidMount(){
@@ -22,35 +24,21 @@ let Root = React.createClass({
 			wmode:'window'
 			
 		});
-		$('#player').bind($.jPlayer.event.timeupdate, (e) =>{
-			duration = e.jPlayer.status.duration;
-			this.setState({
-				progress: e.jPlayer.status.currentPercentAbsolute
-			});
-			
-		});
+		
 	},	
 	componentWillUnmount(){
-		$('#player').unbind($.jPlayer.event.timeupdate);
-	},
-	progressChangeHandler(progress){
-		console.log('from root widget',progress);
-		$('#player').jPlayer('play', duration * progress);
-		
+
 	},
 	render(){
 		return(
 			<div>
 				<Header />
 				<div id="player"></div>
-				<Progress
-					progress={this.state.progress}
-					onProgressChange = {
-						this.progressChangeHandler
-					}
-					barColor = "#ff0000"
-				>
-				</Progress>
+				<MusicList
+					currentMusicItem={this.state.currentMusicItem}
+					
+					musicList={this.state.musicList}
+				></MusicList>
 			</div>			
 		)
 	}
