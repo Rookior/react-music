@@ -1,6 +1,8 @@
 import React from 'react'
 import Progress from '../components/progress'
 import './player.less'
+import { Link } from 'react-router'
+
 let duration = null;
 let Player = React.createClass({
 	getInitialState() {
@@ -50,7 +52,7 @@ let Player = React.createClass({
 	render() {
 		return(
 			<div className="player-page">
-			 <h1 className="caption">我的私人音乐坊 &gt;</h1>
+			 <h1 className="caption"><Link to="/list">我的私人音乐坊 &gt;</Link></h1>
 			  <div className="mt20 row">
 			  	    <div className="controll-wrapper">
 			  			<h2 className="music-title">{this.props.currentMusicItem.title}</h2>
@@ -70,7 +72,7 @@ let Player = React.createClass({
                 				
                 			</div>
                 		</div>
-                		<div style={{height: 10, lineHeight: '10px'}}>
+                		<div style={{height: 10, lineHeight: '10px', marginTop:10}}>
 			                <Progress
 			                	progress={this.state.progress}
 			                	onProgressChange = {this.progressChangeHandler}

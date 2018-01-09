@@ -1,14 +1,16 @@
 import React from 'react'
 import Header from './components/header'
 import Player from './page/player'
+import MusicList from './page/musiclist'
 import { MUSIC_LIST } from './config/musiclist'
+import { Router, IndexRoute, Link, Route, hashHistory } from 'react-router'
 
 
-let Root = React.createClass({
-	
+let App = React.createClass({
 	getInitialState(){
 		return{
-			currentMusicItem: MUSIC_LIST[0]
+			musicList : MUSIC_LIST,
+			currentMusicItem: MUSIC_LIST[1]
 		}
 	},
 	componentDidMount(){
@@ -32,9 +34,27 @@ let Root = React.createClass({
 			<div>
 				<Header />
 				<div id="player"></div>
-				<Player currentMusicItem={this.state.currentMusicItem}></Player>
+				{ React.cloneElement(this.props.children,this.state) }
+				
 			</div>			
 		)
 	}
+});
+
+
+let Root = React.createClass({
+	render(){
+		return (
+		
+			<Router history={hashHistory}>
+				<Route path="/" component={App}>
+					<IndexRoute component={Player}></IndexRoute>
+					<Route path="/list" component={MusicList}></Route>
+				</Route>
+			</Router>
+		
+		);
+	}
+	
 });
 export default Root;
